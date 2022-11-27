@@ -1,5 +1,5 @@
-import { toBN } from "starknet/utils/number";
-import { merkleRoot,addressesToLeaf, merkleProof, merkleVerify, hash2 } from "../../../../../Belgeler/graphql-ts-tutorial/app/merkle/merkle";
+import { toBN } from "starknet";
+import { merkleRoot,addressesToLeaf, merkleProof, merkleVerify, hash2 } from "./merkle";
 
 const test = () => {
     const address = [
@@ -7,10 +7,10 @@ const test = () => {
             "0x03480b07F16D77CEbB23E14663BeC10C69047373a83B7aB18B7f525Bab2e3835",
             "0x067A7aF5D706AAF18f7A98D1F5b050c9ac89A9d1a33Ef85Dd75C9c8989F44a6F",
     ]
-    const res = merkleRoot(addressesToLeaf(address))
+    const root = merkleRoot(addressesToLeaf(address))
     const leaf = hash2(toBN("0x03480b07F16D77CEbB23E14663BeC10C69047373a83B7aB18B7f525Bab2e3835"),toBN("0x03480b07F16D77CEbB23E14663BeC10C69047373a83B7aB18B7f525Bab2e3835"))
     const proof = merkleProof("0x067A7aF5D706AAF18f7A98D1F5b050c9ac89A9d1a33Ef85Dd75C9c8989F44a6F", address)
-    const verify = merkleVerify(leaf,res,proof)
+    const verify = merkleVerify(leaf,root,proof)
     console.log("verify",verify)
 }
 
