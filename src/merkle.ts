@@ -4,7 +4,14 @@ import { toBN } from "starknet/utils/number";
 
 
 export function hash2(x: BN, y: BN): string {
-    return pedersen([x, y])
+    if(x.lte(y)){
+        return pedersen([x, y])
+
+    }else{
+        return pedersen([y, x])
+
+
+    }
 }
 
 export function addressesToLeaf(address: string[]): string[] {
@@ -19,13 +26,14 @@ export function merkleRoot(leafs: string[]): string {
         return leafs[0];
     }
     if (leafs.length % 2 === 1) {
-        leafs.push(leafs[leafs.length - 1]);
+        leafs.push(leafs[leafs.length-1]);
     }
     let nextLeafs: string[] = [];
 
     for (let i = 0; i < leafs.length; i += 2) {
         nextLeafs.push(hash2(toBN(leafs[i]), toBN(leafs[i + 1])))
-    }
+    }  
+    leafs = nextLeafs
     return merkleRoot(nextLeafs)
 
 }
@@ -61,7 +69,7 @@ export function merkleProof(address: string, addresses: string[]): string[] {
         if (leafs.length % 2 === 1) {
             leafs.push(leafs[leafs.length - 1]);
         }
-        index = index / 2
+        index = Math.floor(index/ 2)
         if (index % 2 === 0) {
             proof.push(leafs[index + 1]);
         } else {
@@ -71,7 +79,7 @@ export function merkleProof(address: string, addresses: string[]): string[] {
     return proof
 }
 
-export function merkleVerify(leaf:string, root: string, proof:string[]): boolean {
+export function merkleVerify(leaf:string, root: string, proof:string[]) {
     if (proof.length === 0) {
         return leaf == root
     }
