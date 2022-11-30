@@ -2,8 +2,5 @@
 
 Typescript implementation of ncitron's cairo-merkle-distributor
 
-* Merkle proof utils under [merkleUtils.ts](./src/merkleUtils.ts)
-* Pedersen hash under [pedersen.ts](./src/pedersen.ts)
-
-## TODO:
-- Tests
+* Merkle utils under [merkle.ts](./src/merkle.ts)
+* Test under [test.ts](./src/test.ts)
